@@ -24,4 +24,9 @@
     <ProjectReference Include="..\..\src\DotNetty.Transport\DotNetty.Transport.csproj" />
     <ProjectReference Include="..\Examples.Common\Examples.Common.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="protobuf-net">
+      <HintPath>..\..\..\..\..\software\protoc-3.5.1-osx-x86_64\bin\protobuf-net.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

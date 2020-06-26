@@ -45,17 +45,18 @@ namespace Echo.Client
 
                         if (cert != null)
                         {
-                            pipeline.AddLast("tls", new TlsHandler(stream => new SslStream(stream, true, (sender, certificate, chain, errors) => true), new ClientTlsSettings(targetHost)));
+                           // pipeline.AddLast("tls", new TlsHandler(stream => new SslStream(stream, true, (sender, certificate, chain, errors) => true), new ClientTlsSettings(targetHost)));
                         }
-                        pipeline.AddLast(new LoggingHandler());
-                        pipeline.AddLast("framing-enc", new LengthFieldPrepender(2));
-                        pipeline.AddLast("framing-dec", new LengthFieldBasedFrameDecoder(ushort.MaxValue, 0, 2, 0, 2));
+                       // pipeline.AddLast(new LoggingHandler());
+                        pipeline.AddLast(new LengthFieldBasedFrameDecoder(1024, 0, 4, 0, 4));
+                        pipeline.AddLast("framing-enc", new MessageEncoder());
+                        pipeline.AddLast("framing-dec", new MessageDecoder());
 
                         pipeline.AddLast("echo", new EchoClientHandler());
                     }));
 
                 IChannel clientChannel = await bootstrap.ConnectAsync(new IPEndPoint(ClientSettings.Host, ClientSettings.Port));
-
+                
                 Console.ReadLine();
 
                 await clientChannel.CloseAsync();
